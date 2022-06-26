@@ -35,6 +35,18 @@ module.exports = {
         overlay: {
             warnings: false,
             errors: true
+        },
+        // 配置反向代理 一个项目可以跨多个域
+        proxy: {
+            // 当地址中有/api的时候，进行代理
+            '/api': {
+                target: 'http://ihrm-java.itheima.net/', //我们要代理的地址
+                changeOrigin: true, // 是否跨域
+                // 重写路径  由于后端接口，需要带有api所有不需要重新路径
+                // pathRewrite: {
+                //     '^/api': '' // 将路径中的 /api 去掉
+                // }
+            }
         }
     },
     configureWebpack: {
