@@ -9,10 +9,16 @@ export function login(data) {
     })
 }
 
-export function getInfo(token) {
-
+export function getUserInfo() {
+    return request({
+        method: 'POST',
+        url: '/sys/profile',
+    })
 }
-
-export function logout() {
-
+// 根据用户id获取用户详情
+export function getUserDetailById(userId) {
+    return request({
+        method: 'GET', // axios 默认类型是get   method可以省略
+        url: `/sys/user/${userId}`
+    })
 }
