@@ -13,6 +13,7 @@ import store from './store'
 import router from './router'
 import component from '@/components' // 注册全局公共组件
 import * as directives from '@/directives'
+import * as filters from '@/filters' // 引入过滤器
 import '@/icons' // icon
 import '@/permission' // 权限控制
 
@@ -31,6 +32,11 @@ Vue.use(ElementUI, { locale })
     // Vue.use(ElementUI)
 Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key]) // 设置自定义指令
+})
+
+// 注册自定义过滤器
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
 })
 
 // 注册自定义组件
