@@ -151,6 +151,7 @@ export default {
     async handleDelete(row) {
       // 删除角色功能
       try {
+        await this.$confirm('确认删除该角色吗？')  // 只有点击确定才会进入下面代码
         await deleteRole(row.id)
         this.getRoleList()
         this.$message.success('删除角色成功')
