@@ -119,6 +119,7 @@ export function param2Obj(url) {
 // 将列表数据转化为树形数据 => 递归算法 自身调用自身 => 一定条件不能一样，传入参数不能一样，否则会死循环
 // 遍历树形结构，有一个重点，要先找一个头 
 // 处理原来  pid='' 为 根节点， pid = id 找出来 根节点的子节点
+// list 参数，是列表数组，rootValue 是需要找的根节点 本项目是 pid 
 export const transListToTreeData = (list, rootValue) => {
     let arr = [] // 定义一个空数组
     list.forEach(item => {

@@ -64,7 +64,7 @@ data() {
 const checkNameRepeat = async(rule, value, callback) => {
     // value 是部门名称(表单数据)  要去和同级部门下比较，有没有相同的名称，相同的 不能通过， 不同的，可以通过
     const { depts } = await getDepartments() 
-    let isRepeat = false
+    let isRepeat = false  // 初始化变量
     if(this.formData.id) {
         // 编辑功能校验
         // 编辑的数据，数据库里面有   判断： 同级部门下，编辑的名字，不能和其他名字重复

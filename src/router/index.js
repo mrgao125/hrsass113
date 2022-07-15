@@ -40,7 +40,7 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 
-
+/* 静态路由 */
 export const constantRoutes = [{
         path: '/login',
         component: () =>
@@ -65,6 +65,16 @@ export const constantRoutes = [{
             component: () =>
                 import ('@/views/dashboard/index'),
             meta: { title: '首页', icon: 'dashboard' }
+        }]
+    },
+    {
+        path: '/import',
+        component: Layout,
+        hidden: true, // 不显示在左侧菜单中
+        children: [{
+            path: '', // 什么都不写表示默认的二级路由
+            component: () =>
+                import ('@/views/import')
         }]
     },
     // 404 page must be placed at the end !!!

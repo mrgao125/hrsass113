@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <!-- 头部导航 -->
     <page-tools :showBefore="true">
       <!-- 插槽两种写法： slot="name"  或者 v-slot:name 标签外必须加template 且写在template上 -->
       <span slot="before">待办事项10件</span>
@@ -8,6 +9,8 @@
         <el-button type="primary">导入excel</el-button>
       </template>
     </page-tools>
+    <!-- 下载上传excel组件 -->
+    <upload-excel></upload-excel>
   </div>
 </template>
 
