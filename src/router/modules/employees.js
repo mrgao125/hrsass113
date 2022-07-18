@@ -13,5 +13,13 @@ export default {
             title: '员工管理',
             icon: 'people'
         } // 路由的元信息，存储数据的地方，可以放任何内容
+    }, {
+        path: 'detail/:id',
+        hidden: true, // 表示内容不在左侧内容显示
+        component: () =>
+            import ('@/views/employees/detail'),
+        meta: {
+            title: '员工详情'
+        }
     }]
 }

@@ -42,3 +42,12 @@ export const importEmployees = data => {
         data
     })
 }
+
+// 保存个人信息
+export const saveUserDetailById = data => {
+    return request({
+        url: `/sys/user/${data.id}`,
+        method: 'PUT',
+        data
+    })
+}

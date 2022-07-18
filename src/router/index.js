@@ -68,7 +68,7 @@ export const constantRoutes = [{
         }]
     },
     {
-        path: '/import',
+        path: '/import', // excel 导入路由页面
         component: Layout,
         hidden: true, // 不显示在左侧菜单中
         children: [{
