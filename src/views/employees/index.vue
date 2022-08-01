@@ -7,7 +7,7 @@
         <template slot="after">
           <el-button size="small" type="danger" @click="exportDate">excel导出</el-button>
           <el-button size="small" type="success" @click="$router.push('/import')">excel导入</el-button>
-          <el-button size="small" type="primary" @click="showDialog=true">新增员工</el-button>
+          <el-button size="small" type="primary" @click="showDialog=true" :disabled="!checkPermission('ad-eployee')">新增员工</el-button>
         </template>
       </page-tools>
       <!-- 表格组件 -->
@@ -19,10 +19,17 @@
       >
         <el-table-column sortable label="序号" type="index"></el-table-column>
         <el-table-column sortable label="姓名" prop="username"></el-table-column>
-        <el-table-column sortable label="头像">
-          <el-image
-            :src="employeesData.staffPhoto"
-          />
+        <el-table-column sortable label="头像" align="center">
+          <!-- 作用域插槽  -->
+          <template v-slot="{ row }">
+            <img
+             @click="showQrCode(row.staffPhoto)"
+            :src="row.staffPhoto"
+            style="border-radius: 50%; width: 100px; height: 100px; padding: 10px"
+            alt=""
+            v-imagerror="require('@/assets/common/head.jpg')"
+           />
+          </template>
         </el-table-column>
         <el-table-column sortable label="手机号" prop="mobile"></el-table-column>
         <el-table-column sortable label="工号" prop="workNumber"></el-table-column>
@@ -55,8 +62,8 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small" @click="deleteEmployee(row.id)">删除</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
+              <el-button type="text" size="small" @click="deleteEmployee(row.id)" :disabled="!checkPermission('del-employ')">删除</el-button>
             </template>
         </el-table-column>
       </el-table>
@@ -75,6 +82,18 @@
       <add-employee
         :showDialog.sync="showDialog"
       />
+      <!-- 扫描头像显示二维码 -->
+      <el-dialog
+       title="二维码"
+       :visible.sync="showCodeDialog"
+       width="300px"
+      >
+        <el-row type="flex" justify="center">
+          <canvas ref="myCanvas"></canvas>
+        </el-row>
+      </el-dialog>
+      <!-- 角色权限组件 -->
+      <assign-role ref="assignRole" :showRoleDialog.sync="showRoleDialog" :userId="userId"></assign-role>
     </div>
   </div>
 </template>
@@ -84,6 +103,8 @@ import { getEmployeeList, deleteEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'  // 引入员工的枚举对象
 import AddEmployee from './components/add-employee.vue'
 import { formatDate } from '@/filters'
+import AssignRole from './components/assign-role.vue'
+import  QrCode from 'qrcode'  // 二维码生成插件包
 export default {
   data() {
     return {
@@ -94,10 +115,13 @@ export default {
         total: 0  // 页码总数
       },
       loading: false,  // 加载遮罩层
-      showDialog: false // 控制弹层显示，默认关闭
+      showDialog: false, // 控制弹层显示，默认关闭
+      showCodeDialog: false, // 控制二维码弹层
+      showRoleDialog: false, // 显示分配角色弹层
+      userId: '' // 每条角色的id
     }
   },
-  components: { AddEmployee },
+  components: { AddEmployee, AssignRole},
   created() {
     this.getEmployeeList()
   },
@@ -193,6 +217,26 @@ export default {
       })
       // 如果不判断 部门 和 聘用形式，可以代码精简 
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
+    },
+    showQrCode(url) {
+      // url存在弹出
+      if(url) {
+        this.showCodeDialog = true  // 数据更新了，但是弹层会立即出现吗？页面渲染是异步的！！！
+        // 有一个方法，在页面渲染完毕后在执行
+        this.$nextTick(() => {
+          // 此时可以确认已经有ref对象了
+          QrCode.toCanvas(this.$refs.myCanvas, url)  // 将地址转化成二维码链接
+        })
+        
+      }else {
+        this.$message.error('该用户未上传头像')
+      }
+      
+    },
+    async editRole(id) {
+      this.userId = id  // props赋值 赋值并且渲染是异步的
+      await this.$refs.assignRole.getUserDetailById(id)  // 调用子组件方法  异步操作 如果不处理会出现闪的情况
+      this.showRoleDialog = true // 弹层
     }
   }
 }

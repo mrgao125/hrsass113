@@ -59,7 +59,6 @@ export default {
       const res = await getDepartments()
       this.company = { name: res.companyName, manager:'负责人',id:''}
       this.departs = transListToTreeData(res.depts, '')
-      console.log(this.departs)
     },
     // 监视tree-tools中触发的添加部门自定义事件
     // node是我们当前点击的节点

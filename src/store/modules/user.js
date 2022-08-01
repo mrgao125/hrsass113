@@ -1,102 +1,6 @@
-// import { login, logout, getInfo } from '@/api/user'
-// import { getToken, setToken, removeToken } from '@/utils/auth'
-// import { resetRouter } from '@/router'
-
-// const getDefaultState = () => {
-//   return {
-//     token: getToken(),
-//     name: '',
-//     avatar: ''
-//   }
-// }
-
-// const state = getDefaultState()
-
-// const mutations = {
-//   RESET_STATE: (state) => {
-//     Object.assign(state, getDefaultState())
-//   },
-//   SET_TOKEN: (state, token) => {
-//     state.token = token
-//   },
-//   SET_NAME: (state, name) => {
-//     state.name = name
-//   },
-//   SET_AVATAR: (state, avatar) => {
-//     state.avatar = avatar
-//   }
-// }
-
-// const actions = {
-//   // user login
-//   login({ commit }, userInfo) {
-//     const { username, password } = userInfo
-//     return new Promise((resolve, reject) => {
-//       login({ username: username.trim(), password: password }).then(response => {
-//         const { data } = response
-//         commit('SET_TOKEN', data.token)
-//         setToken(data.token)
-//         resolve()
-//       }).catch(error => {
-//         reject(error)
-//       })
-//     })
-//   },
-
-//   // get user info
-//   getInfo({ commit, state }) {
-//     return new Promise((resolve, reject) => {
-//       getInfo(state.token).then(response => {
-//         const { data } = response
-
-//         if (!data) {
-//           return reject('Verification failed, please Login again.')
-//         }
-
-//         const { name, avatar } = data
-
-//         commit('SET_NAME', name)
-//         commit('SET_AVATAR', avatar)
-//         resolve(data)
-//       }).catch(error => {
-//         reject(error)
-//       })
-//     })
-//   },
-
-//   // user logout
-//   logout({ commit, state }) {
-//     return new Promise((resolve, reject) => {
-//       logout(state.token).then(() => {
-//         removeToken() // must remove  token  first
-//         resetRouter()
-//         commit('RESET_STATE')
-//         resolve()
-//       }).catch(error => {
-//         reject(error)
-//       })
-//     })
-//   },
-
-//   // remove token
-//   resetToken({ commit }) {
-//     return new Promise(resolve => {
-//       removeToken() // must remove  token  first
-//       commit('RESET_STATE')
-//       resolve()
-//     })
-//   }
-// }
-
-// export default {
-//   namespaced: true,
-//   state,
-//   mutations,
-//   actions
-// }
-
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
+import { resetRouter } from '@/router'
 // 状态
 const state = {
     token: getToken() || {}, // 设置token为共享状态  初始化vuex时候，先从缓存中获取token
@@ -147,8 +51,21 @@ const actions = {
     logout(context) {
         // 删除tokn  也删除了缓存中的
         context.commit('removeToken')
-            // 删除用户资料
+
+        // 删除用户资料
         context.commit('removeInfo')
+
+        // 重置路由  否则上一个用户的权限，下一个用户就会拥有
+        resetRouter()
+
+        /*****
+         * 设置权限模块下的路由为初始状态 将permission 下的 routes 设为空，回到初始路由状态
+         * **/
+        // vuex 子模块 之间action 如何调用  都没加 namespaced 可以随意调用，所有的actions 和mutations 都是全局的
+        // 加了命名空间的 怎么调用另一个 命名空间的子模块
+        // 加了命名空间的context 指的不是全局的，指的是模块下的， 加了第三个参数，
+        // mutations 参数 名称 载荷payload 第三个参数对象 {}  {root: true} 标识可以调用根级的 mutations 和actions
+        context.commit('permission/setRoutes', [], { root: true })
     }
 }
 export default {

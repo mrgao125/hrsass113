@@ -26,7 +26,6 @@ export default {
 props: {
     // 控制头部 图标是否显示
     showBefore: {
-        required: true,
         default:false
     }
 },

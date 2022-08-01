@@ -2,7 +2,7 @@
 import layout from '@/layout'
 export default {
     path: '/setting',
-    name: 'setting',
+    name: 'settings', // 命名settings 是为了和权限标识对应
     component: layout,
     children: [{
         path: '',

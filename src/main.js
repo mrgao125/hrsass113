@@ -14,6 +14,7 @@ import router from './router'
 import component from '@/components' // 注册全局公共组件
 import * as directives from '@/directives'
 import * as filters from '@/filters' // 引入过滤器
+import { CheckPermission } from '@/mixin/CheckPermission'
 import '@/icons' // icon
 import '@/permission' // 权限控制
 
@@ -41,6 +42,10 @@ Object.keys(filters).forEach(key => {
 
 // 注册自定义组件
 Vue.use(component)
+
+// 全局注册混入检查对象  表示所有组件都拥有一个检查的方法
+Vue.mixin(CheckPermission)
+
 Vue.config.productionTip = false
 
 new Vue({

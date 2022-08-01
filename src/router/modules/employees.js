@@ -21,5 +21,13 @@ export default {
         meta: {
             title: '员工详情'
         }
+    }, {
+        path: 'print/:id', // 员工二级路由id后面加 ? 表示此参数可传可不传
+        component: () =>
+            import ('@/views/employees/print.vue'),
+        hidden: true,
+        meta: {
+            title: '员工打印'
+        }
     }]
 }

@@ -24,10 +24,13 @@
                     </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="个人详情">
-                    
+                    <!-- <user-info></user-info> -->
+                    <!-- vuejs中内置了一个组件component 可以是任何组件,通过is属性，绑定需要显示的组件,使用组件的另一种方法  这种写法作用：切换组件。 is属性必须是表达式-->
+                    <!-- 动态组件 可以切换组件 -->
+                    <component :is="userComponent"/>
                 </el-tab-pane>
                 <el-tab-pane label="岗位信息">
-                    
+                    <component :is="jobComponent"></component>
                 </el-tab-pane>
             </el-tabs>
         </el-card>
@@ -38,9 +41,13 @@
 <script>
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
+import UserInfo from './components/user-info.vue'
+import JobInfo from './components/job-info.vue'
 export default {
   data() {
       return {
+        userComponent: 'UserInfo',
+        jobComponent: 'JobInfo',
         userId: this.$route.params.id, // 直接将路由中的参数赋值给data  路由中:id是params参数  ?id=123,是query参数
         userInfo: {
             username: '',
@@ -54,6 +61,7 @@ export default {
         }
       }
   },
+  components:{ UserInfo, JobInfo },
   created() {
     this.getUserDetailById()
   },

@@ -77,8 +77,8 @@ export const constantRoutes = [{
                 import ('@/views/import')
         }]
     },
-    // 404 page must be placed at the end !!!
-    { path: '*', redirect: '/404', hidden: true }
+    // 404 页面必须放在路由的最后 !!!
+
 ]
 
 // 定义动态路由
@@ -96,7 +96,7 @@ export const asyncRouters = [
 const createRouter = () => new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: [...constantRoutes, ...asyncRouters] // 静态路由和动态路由临时合并
+    routes: [...constantRoutes] // 静态路由和动态路由临时合并
 })
 
 const router = createRouter()
@@ -104,7 +104,7 @@ const router = createRouter()
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
     const newRouter = createRouter()
-    router.matcher = newRouter.matcher // reset router
+    router.matcher = newRouter.matcher // 重置路由方法，在登出时候调用
 }
 
 export default router

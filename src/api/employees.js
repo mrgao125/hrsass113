@@ -43,11 +43,56 @@ export const importEmployees = data => {
     })
 }
 
-// 保存个人信息
+// 保存个人基本信息
 export const saveUserDetailById = data => {
     return request({
         url: `/sys/user/${data.id}`,
         method: 'PUT',
+        data
+    })
+}
+
+// 保存个人信息
+export const saveUserInfoPersonal = (id, data) => {
+    return request({
+        url: `/employees/${id}/personalInfo`,
+        method: 'PUT',
+        data
+    })
+}
+
+// 保存岗位信息
+export const saveJobInfo = (id, data) => {
+    return request({
+        method: 'PUT',
+        url: `/employees/${id}/jobs`,
+        data
+    })
+}
+
+// 获取员工个人信息
+export const getPersonalDetail = id => {
+    return request({
+        method: 'GET',
+        url: `/employees/${id}/personalInfo`
+    })
+}
+
+// 获取员工岗位信息
+export const getJobInfo = id => {
+    return request({
+        method: 'get',
+        url: `/employees/${id}/jobs`
+    })
+}
+
+/** **
+ * 给用户分配角色
+ * *****/
+export const assignRole = data => {
+    return request({
+        method: 'put',
+        url: '/sys/user/assignRoles',
         data
     })
 }
