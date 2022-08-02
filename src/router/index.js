@@ -9,6 +9,7 @@ import attendancesRouter from './modules/attendances.js'
 import salarysRouter from './modules/salarys.js'
 import settingRouter from './modules/setting.js'
 import socialRouter from './modules/social.js'
+import userRouter from './modules/user' // 公共静态路由模块
 
 Vue.use(Router)
 
@@ -77,6 +78,7 @@ export const constantRoutes = [{
                 import ('@/views/import')
         }]
     },
+    userRouter
     // 404 页面必须放在路由的最后 !!!
 
 ]
