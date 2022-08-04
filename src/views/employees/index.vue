@@ -7,7 +7,7 @@
         <template slot="after">
           <el-button size="small" type="danger" @click="exportDate">excel导出</el-button>
           <el-button size="small" type="success" @click="$router.push('/import')">excel导入</el-button>
-          <el-button size="small" type="primary" @click="showDialog=true" :disabled="!checkPermission('ad-eployee')">新增员工</el-button>
+          <el-button size="small" type="primary" @click="showDialog=true" :disabled="checkPermission('ad-eployee')">新增员工</el-button>
         </template>
       </page-tools>
       <!-- 表格组件 -->
@@ -63,7 +63,7 @@
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
-              <el-button type="text" size="small" @click="deleteEmployee(row.id)" :disabled="!checkPermission('del-employ')">删除</el-button>
+              <el-button type="text" size="small" @click="deleteEmployee(row.id)" :disabled="checkPermission('del-employ')">删除</el-button>
             </template>
         </el-table-column>
       </el-table>

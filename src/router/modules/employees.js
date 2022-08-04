@@ -7,6 +7,7 @@ export default {
     component: layout,
     children: [{
         path: '', // 这里path 不写的时候  表示，/employees 不但有布局layout 还有员工主页,显示一级路由，二级组件
+        name: 'employees',
         component: () =>
             import ('@/views/employees'),
         meta: {

@@ -4,7 +4,7 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import zhLocale from 'element-ui/lib/locale/lang/zh-CN' // 引入中文格式
+// import zhLocale from 'element-ui/lib/locale/lang/en'
 
 import '@/styles/index.scss' // 全局样式
 
@@ -13,7 +13,8 @@ import store from './store'
 import router from './router'
 import component from '@/components' // 注册全局公共组件
 import * as directives from '@/directives'
-import * as filters from '@/filters' // 引入过滤器
+import * as filters from '@/filters' // 引入过滤器 * 引入会将 所有函数和函数名放入一个对象 组成key : value形式
+import i18n from '@/lang' // 引入多语言实例
 import { CheckPermission } from '@/mixin/CheckPermission'
 import '@/icons' // icon
 import '@/permission' // 权限控制
@@ -28,9 +29,14 @@ import '@/permission' // 权限控制
  */
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { zhLocale })
-    // 如果想要中文版 element-ui，按如下方式声明
-    // Vue.use(ElementUI)
+// Vue.use(ElementUI, { zhLocale })
+
+// 如果想要中文版 element-ui，按如下方式声明
+Vue.use(ElementUI, {
+    // element 支持i8n 的处理 
+    // 此时 i18n 会根据 当前的locale属性 去寻找对应的显示内存  改变locale的值，语言就会改变
+    i18n: (key, value) => i18n.t(key, value) // 调用i18n的 t方法 会去对应的语言包中寻找对应的内容
+})
 Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key]) // 设置自定义指令
 })
@@ -52,5 +58,6 @@ new Vue({
     el: '#app',
     router,
     store,
+    i18n,
     render: h => h(App)
 })
